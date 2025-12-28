@@ -1,0 +1,334 @@
+/* ==================== Fire Risk Dashboard Styles ==================== */
+
+/* Fire Map Container */
+#fireContent .flood-map-container {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#fireContent .flood-map-header h4 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Fire Risk Map */
+#fireContent .flood-risk-map {
+    height: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a1a1a 100%) !important;
+    border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+#fireContent .flood-risk-map .leaflet-container {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a1a1a 100%) !important;
+}
+
+#fireContent .flood-risk-map .leaflet-pane {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a1a1a 100%) !important;
+}
+
+#fireContent .flood-risk-map .leaflet-tile-pane {
+    display: none !important;
+}
+
+/* Fire Charts Section */
+#fireContent .flood-charts-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+#fireContent .chart-card {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.08) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    transition: all 0.3s ease;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+#fireContent .chart-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+#fireContent .chart-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Fire Table Container */
+#fireContent .flood-table-container {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.08) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+#fireContent .flood-table-header h4 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Fire Risk Table */
+#fireContent .flood-risk-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent;
+}
+
+#fireContent .flood-risk-table thead {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%);
+}
+
+#fireContent .flood-risk-table thead th {
+    color: #fff;
+    font-weight: 600;
+    padding: 16px;
+    text-align: left;
+    border-bottom: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+#fireContent .flood-risk-table tbody tr {
+    border-bottom: 1px solid rgba(239, 68, 68, 0.1);
+    transition: all 0.2s ease;
+}
+
+#fireContent .flood-risk-table tbody tr:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+#fireContent .flood-risk-table tbody tr.priority-row {
+    background: rgba(220, 38, 38, 0.15);
+    border-left: 4px solid #dc2626;
+}
+
+#fireContent .flood-risk-table tbody td {
+    color: #e0e0e0;
+    padding: 14px 16px;
+}
+
+/* Fire Risk Badges */
+#fireContent .risk-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#fireContent .risk-badge.çok_yüksek {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: #fff;
+}
+
+#fireContent .risk-badge.yüksek {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #fff;
+}
+
+#fireContent .risk-badge.orta {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: #fff;
+}
+
+#fireContent .risk-badge.düşük {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #1a1a1a;
+}
+
+#fireContent .risk-badge.çok_düşük {
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+    color: #1a1a1a;
+}
+
+/* Fire Priority Badge */
+#fireContent .priority-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(239, 68, 68, 0.2) 100%);
+    border: 1px solid #dc2626;
+    border-radius: 6px;
+    color: #ef4444;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Fire Map Legend */
+#fireContent .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(26, 26, 26, 0.8);
+    border-radius: 8px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+#fireContent .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#fireContent .legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#fireContent .legend-label {
+    color: #e0e0e0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Fire Table Controls */
+#fireContent .table-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+#fireContent .table-search {
+    padding: 10px 14px;
+    background: rgba(26, 26, 26, 0.6);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    width: 250px;
+    transition: all 0.2s ease;
+}
+
+#fireContent .table-search:focus {
+    outline: none;
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+#fireContent .table-filter {
+    padding: 10px 14px;
+    background: rgba(26, 26, 26, 0.6);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#fireContent .table-filter:focus {
+    outline: none;
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Fire Decision Chart */
+#fireContent .decision-chart {
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+#fireContent .chart-card canvas {
+    display: block !important;
+    visibility: visible !important;
+    flex: 1;
+    height: 400px !important;
+    max-height: 400px;
+    min-height: 400px;
+    width: 100% !important;
+}
+
+#fireContent .decision-chart canvas {
+    display: block !important;
+    visibility: visible !important;
+    flex: 1;
+    height: 400px !important;
+    max-height: 400px;
+    min-height: 400px;
+    width: 100% !important;
+}
+
+/* Chart Card Content */
+#fireContent .chart-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#fireContent .chart-card > p {
+    margin-bottom: 15px;
+}
+
+#fireContent .chart-card > canvas {
+    flex: 1;
+    min-height: 400px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    #fireContent .flood-charts-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    #fireContent .flood-charts-section {
+        grid-template-columns: 1fr;
+    }
+    
+    #fireContent .flood-risk-map {
+        height: 400px;
+    }
+    
+    #fireContent .table-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    #fireContent .table-search {
+        width: 100%;
+    }
+}
+

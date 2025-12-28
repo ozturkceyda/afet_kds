@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afet Yönetimi KDS - Dashboard</title>
+    <link rel="stylesheet" href="/views/css/dashboard.css">
+    <link rel="stylesheet" href="/views/css/flood-dashboard.css">
+    <link rel="stylesheet" href="/views/css/fire-dashboard.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <!-- Leaflet JS - Load immediately, no defer -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <!-- Chart.js for data visualization - Load immediately -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel Standalone for JSX compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🌍 KDS</h1>
+                <p>Afet Yönetimi</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-section="provinces">
+                    <span>🏛️</span> İller
+                </a>
+                <a href="#" class="nav-item" data-section="weather">
+                    <span>🌤️</span> Hava Durumu
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h2>Marmara Bölgesi Afet Yönetimi Dashboard</h2>
+                <div class="header-actions">
+                    <select id="provinceSelect" class="province-select">
+                        <option value="">İl Seçiniz...</option>
+                    </select>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Loading State -->
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Yükleniyor...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="error" class="error-message" style="display: none;">
+                    <p></p>
+                </div>
+
+                <!-- Dashboard Section -->
+                <section id="dashboardSection" class="dashboard-section">
+                    <!-- Disaster Type Tabs -->
+                    <div class="disaster-tabs-container">
+                        <div class="disaster-tabs">
+                            <button class="disaster-tab active" data-disaster="earthquake" id="tabEarthquake">
+                                <span class="tab-icon">🌍</span>
+                                <span class="tab-label">Deprem</span>
+                            </button>
+                            <button class="disaster-tab" data-disaster="flood" id="tabFlood">
+                                <span class="tab-icon">🌊</span>
+                                <span class="tab-label">Sel</span>
+                            </button>
+                            <button class="disaster-tab" data-disaster="fire" id="tabFire">
+                                <span class="tab-icon">🔥</span>
+                                <span class="tab-label">Yangın</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Earthquake Tab Content -->
+                    <div id="earthquakeContent" class="disaster-content active">
+                        <!-- Marmara Region Map - En Başta -->
+                        <div class="dashboard-map-container">
+                            <div class="dashboard-map-header">
+                                <h3>🗺️ Marmara Bölgesi Haritası</h3>
+                                <p>İllere tıklayarak risk skorlarını görüntüleyebilirsiniz</p>
+                            </div>
+                            <div id="dashboardMarmaraMap" class="dashboard-marmara-map"></div>
+                        </div>
+
+                        <!-- En Kısa Ulaşım Rotası -->
+                        <div id="transportRoutesContainer" class="transport-routes-container" style="display: none;">
+                            <div class="transport-routes-header">
+                                <h3>🚗 En Kısa Ulaşım Rotası</h3>
+                                <p id="transportRoutesSubtitle" style="color: #aaa; font-size: 14px; margin-top: 5px;">
+                                    Hedef ile diğer illerden en kısa rotalar
+                                </p>
+                            </div>
+                            <div class="transport-routes-content">
+                                <div class="transport-routes-list" id="transportRoutesList">
+                                    <!-- Rotalar buraya eklenecek -->
+                                </div>
+                                <div class="transport-routes-map-container">
+                                    <div id="transportRoutesMap" class="transport-routes-map"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kentsel Dönüşüm Öncelik Sırası Grafiği -->
+                        <div class="chart-card">
+                            <h3>🏗️ Kentsel Dönüşüm Öncelik Sırası</h3>
+                            <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">Deprem risk skorlarına göre sıralanmış iller</p>
+                            <canvas id="urbanTransformationChart"></canvas>
+                        </div>
+
+                    <!-- Middle Row: Charts and Estimates -->
+                    <div class="dashboard-middle-row">
+                        <!-- Son 30 Günlük Deprem Grafiği -->
+                        <div class="chart-card">
+                            <h3>🌍 Son 30 Günlük Deprem Dağılımı</h3>
+                            <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">Marmara Bölgesi - İl bazında deprem sayıları</p>
+                            <canvas id="earthquake30DaysChart"></canvas>
+                        </div>
+
+                        <!-- Önemli Çıkarımlar -->
+                        <div class="analysis-card">
+                            <h3>🎯 Son 30 Günlük Analiz</h3>
+                            <div class="analysis-content">
+                                <div class="analysis-grid">
+                                    <div class="analysis-item">
+                                        <div class="analysis-icon">⚠️</div>
+                                        <div class="analysis-info">
+                                            <div class="analysis-label">En Riskli Bölge</div>
+                                            <div class="analysis-value" id="mostRiskyProvince">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="analysis-item">
+                                        <div class="analysis-icon">📊</div>
+                                        <div class="analysis-info">
+                                            <div class="analysis-label">Toplam Deprem</div>
+                                            <div class="analysis-value" id="totalEarthquakes">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="analysis-item">
+                                        <div class="analysis-icon">💥</div>
+                                        <div class="analysis-info">
+                                            <div class="analysis-label">Büyük Depremler (3.0+)</div>
+                                            <div class="analysis-value" id="bigEarthquakes">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="analysis-item">
+                                        <div class="analysis-icon">📈</div>
+                                        <div class="analysis-info">
+                                            <div class="analysis-label">Günlük Ortalama</div>
+                                            <div class="analysis-value" id="dailyAverage">-</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="analysis-recommendation">
+                                    <div class="recommendation-header">
+                                        <span class="recommendation-icon">💡</span>
+                                        <span class="recommendation-title">Öneri</span>
+                                    </div>
+                                    <div class="recommendation-text" id="analysisRecommendation">-</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Acil Önlem Kartı -->
+                        <div class="urgent-action-card">
+                            <h3>🚨 Acil Önlem</h3>
+                            <div class="urgent-action-content">
+                                <div class="urgent-action-list" id="urgentActionList">
+                                    <!-- Acil önlemler buraya dinamik olarak eklenecek -->
+                                    <div class="urgent-action-item">
+                                        <div class="urgent-action-icon">📢</div>
+                                        <div class="urgent-action-text">
+                                            <div class="urgent-action-title">Erken Uyarı Sistemi</div>
+                                            <div class="urgent-action-desc">Aktif tutulmalı</div>
+                                        </div>
+                                    </div>
+                                    <div class="urgent-action-item">
+                                        <div class="urgent-action-icon">🏗️</div>
+                                        <div class="urgent-action-text">
+                                            <div class="urgent-action-title">Bina Güvenliği</div>
+                                            <div class="urgent-action-desc">Denetim yapılmalı</div>
+                                        </div>
+                                    </div>
+                                    <div class="urgent-action-item">
+                                        <div class="urgent-action-icon">📋</div>
+                                        <div class="urgent-action-text">
+                                            <div class="urgent-action-title">Acil Durum Planı</div>
+                                            <div class="urgent-action-desc">Gözden geçirilmeli</div>
+                                        </div>
+                                    </div>
+                                    <div class="urgent-action-item">
+                                        <div class="urgent-action-icon">👥</div>
+                                        <div class="urgent-action-text">
+                                            <div class="urgent-action-title">Ekip Hazırlığı</div>
+                                            <div class="urgent-action-desc">Sürekli izlenmeli</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="urgent-action-footer">
+                                    <div class="urgent-action-status">
+                                        <span class="status-indicator"></span>
+                                        <span>Durum: Aktif İzleme</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Flood Tab Content -->
+                    <div id="floodContent" class="disaster-content">
+                        <!-- Weather-Based Flood Risk Alert -->
+                        <div class="flood-weather-alert" id="floodWeatherAlert" style="display: none;">
+                            <div class="weather-alert-content">
+                                <span class="weather-alert-icon">🌧️</span>
+                                <div class="weather-alert-text">
+                                    <strong>Hava Durumu Bazlı Sel Riski</strong>
+                                    <p id="weatherAlertMessage">Hava durumu verileri analiz ediliyor...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Choropleth Map -->
+                        <div class="flood-map-container">
+                            <div class="flood-map-header">
+                                <h4>🗺️ Sel Riski Haritası (Koroplet)</h4>
+                                <p style="color: #aaa; font-size: 14px; margin-top: 5px;">İllerin üzerine gelerek bilgileri görüntüleyebilirsiniz</p>
+                                <div class="map-legend" id="floodMapLegend">
+                                    <!-- Legend will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div id="floodRiskMap" class="flood-risk-map"></div>
+                        </div>
+
+                        <!-- Flood Charts Section -->
+                        <div class="flood-charts-section">
+                            <!-- Chart 1: İl Bazında Ortalama Sel Sayıları -->
+                            <div class="chart-card">
+                                <h3>📊 İl Bazında Ortalama Sel Sayıları</h3>
+                                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">4 yıllık ortalama sel sayılarına göre sıralanmış iller</p>
+                                <canvas id="floodCountsChart"></canvas>
+                            </div>
+
+                            <!-- Chart 2: Risk Seviyesi Dağılımı -->
+                            <div class="chart-card">
+                                <h3>🎯 Risk Seviyesi Dağılımı</h3>
+                                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">İllerin risk seviyelerine göre dağılımı</p>
+                                <canvas id="floodRiskDistributionChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Yönetici Karar Grafikleri -->
+                        <div class="flood-decision-charts-section">
+                            <!-- Chart 3: Bütçe Dağılımı -->
+                            <div class="chart-card decision-chart">
+                                <h3>💰 Önerilen Bütçe Dağılımı</h3>
+                                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">Risk seviyesine göre ayrılması gereken bütçe (Milyon TL)</p>
+                                <canvas id="floodBudgetChart"></canvas>
+                            </div>
+
+                            <!-- Chart 4: Altyapı İyileştirme Öncelikleri -->
+                            <div class="chart-card decision-chart">
+                                <h3>🏗️ Altyapı İyileştirme Öncelikleri</h3>
+                                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">İllere göre yapılması gereken altyapı iyileştirmeleri</p>
+                                <canvas id="floodInfrastructureChart"></canvas>
+                            </div>
+                        </div>
+
+
+                        <!-- Data Table -->
+                        <div class="flood-table-container">
+                            <div class="flood-table-header">
+                                <h4>📊 Sel Riski Analiz Tablosu</h4>
+                                <div class="table-controls">
+                                    <input type="text" id="floodTableSearch" placeholder="İl ara..." class="table-search">
+                                    <select id="floodTableFilter" class="table-filter">
+                                        <option value="all">Tüm Risk Seviyeleri</option>
+                                        <option value="priority">Sadece Öncelikli Bölgeler</option>
+                                        <option value="very_high">Çok Yüksek</option>
+                                        <option value="high">Yüksek</option>
+                                        <option value="medium">Orta</option>
+                                        <option value="low">Düşük</option>
+                                        <option value="very_low">Çok Düşük</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flood-table-wrapper">
+                                <table class="flood-risk-table" id="floodRiskTable">
+                                    <thead>
+                                        <tr>
+                                            <th>İl</th>
+                                            <th>Ort. Sel Sayısı<br><span class="table-subtitle">(4 yıl)</span></th>
+                                            <th>Normalize Skor<br><span class="table-subtitle">(0-1)</span></th>
+                                            <th>Risk Seviyesi</th>
+                                            <th>Durum</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="floodRiskTableBody">
+                                        <!-- Table rows will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Fire Tab Content -->
+                    <div id="fireContent" class="disaster-content">
+                        <!-- Fire Map -->
+                        <div class="flood-map-container">
+                            <div class="flood-map-header">
+                                <h4>🗺️ Yangın Riski Haritası</h4>
+                                <p style="color: #aaa; font-size: 14px; margin-top: 5px;">İllerin üzerine gelerek bilgileri görüntüleyebilirsiniz</p>
+                                <div class="map-legend" id="fireMapLegend">
+                                    <!-- Legend will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div id="fireRiskMap" class="flood-risk-map"></div>
+                        </div>
+
+                        <!-- Fire Charts Section -->
+                        <div class="flood-charts-section">
+                            <!-- Chart 1: İl Bazında Toplam Yangın Sayıları -->
+                            <div class="chart-card">
+                                <h3>🔥 İl Bazında Toplam Yangın Sayıları</h3>
+                                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">Toplam yangın sayılarına göre sıralanmış iller</p>
+                                <canvas id="fireCountsChart"></canvas>
+                            </div>
+
+                            <!-- Chart 2: Risk Seviyesi Dağılımı -->
+                            <div class="chart-card">
+                                <h3>🎯 Risk Seviyesi Dağılımı</h3>
+                                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">İllerin risk seviyelerine göre dağılımı</p>
+                                <canvas id="fireRiskDistributionChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Yangın Nedenleri ve Önlemler Grafikleri -->
+                        <div class="flood-charts-section">
+                            <div class="chart-card">
+                                <h3>🔍 Yangın Nedenleri Dağılımı</h3>
+                                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">Marmara bölgesinde yangınların nedenlerine göre dağılımı</p>
+                                <canvas id="fireCauseChart"></canvas>
+                            </div>
+
+                            <div class="chart-card decision-chart">
+                                <h3>🛡️ Alınması Gereken Önlemler</h3>
+                                <p style="color: #aaa; font-size: 14px; margin-bottom: 15px;">İllere göre yangın önleme öncelikleri</p>
+                                <canvas id="firePreventionChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Data Table -->
+                        <div class="flood-table-container">
+                            <div class="flood-table-header">
+                                <h4>📊 Yangın Riski Analiz Tablosu</h4>
+                                <div class="table-controls">
+                                    <input type="text" id="fireTableSearch" placeholder="İl ara..." class="table-search">
+                                    <select id="fireTableFilter" class="table-filter">
+                                        <option value="all">Tüm Risk Seviyeleri</option>
+                                        <option value="priority">Sadece Öncelikli Bölgeler</option>
+                                        <option value="çok_yüksek">Çok Yüksek</option>
+                                        <option value="yüksek">Yüksek</option>
+                                        <option value="orta">Orta</option>
+                                        <option value="düşük">Düşük</option>
+                                        <option value="çok_düşük">Çok Düşük</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flood-table-wrapper">
+                                <table class="flood-risk-table" id="fireRiskTable">
+                                    <thead>
+                                        <tr>
+                                            <th>İl</th>
+                                            <th>Toplam Yangın<br><span class="table-subtitle">(Adet)</span></th>
+                                            <th>Etkilenen Alan<br><span class="table-subtitle">(Hektar)</span></th>
+                                            <th>Normalize Skor<br><span class="table-subtitle">(0-1)</span></th>
+                                            <th>Risk Seviyesi</th>
+                                            <th>Durum</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="fireRiskTableBody">
+                                        <!-- Table rows will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Provinces Section -->
+                <section id="provincesSection" class="provinces-section" style="display: none;">
+                    <h3>İller Listesi</h3>
+                    <div id="provincesList" class="provinces-list"></div>
+                </section>
+
+                <!-- Risks Section -->
+                <section id="risksSection" class="risks-section" style="display: none;">
+                    <h3>Risk Skorları</h3>
+                    <div id="risksList" class="risks-list"></div>
+                </section>
+
+                <!-- Earthquakes Section -->
+                <section id="earthquakesSection" class="earthquakes-section" style="display: none;">
+                    <h3>Deprem Geçmişi</h3>
+                    
+                    <!-- Statistics Cards -->
+                    <div class="earthquake-stats" id="earthquakeStats" style="display: none;">
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-info">
+                                <h3 id="totalEarthquakes">-</h3>
+                                <p>Toplam Deprem</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-info">
+                                <h3 id="avgMagnitude">-</h3>
+                                <p>Ortalama Büyüklük</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-info">
+                                <h3 id="maxMagnitude">-</h3>
+                                <p>En Büyük Deprem</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📅</div>
+                            <div class="stat-info">
+                                <h3 id="lastEarthquake">-</h3>
+                                <p>Son Deprem</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Earthquakes List -->
+                    <div id="earthquakesList" class="earthquakes-list"></div>
+                </section>
+
+                <!-- Live Earthquakes Section -->
+                <section id="liveEarthquakesSection" class="live-earthquakes-section" style="display: none;">
+                    <div class="live-header">
+                        <h3>🔴 Canlı Depremler</h3>
+                        <div class="live-controls">
+                            <span class="live-indicator">
+                                <span class="live-dot"></span>
+                                <span id="liveStatus">Canlı</span>
+                            </span>
+                            <button id="fetchAFADBtn" class="refresh-btn" title="AFAD Verilerini Çek" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; border: none;">
+                                📡 AFAD Çek
+                            </button>
+                            <button id="refreshLiveBtn" class="refresh-btn" title="Yenile">
+                                🔄
+                            </button>
+                            <label class="auto-refresh-toggle">
+                                <input type="checkbox" id="autoRefreshToggle" checked>
+                                <span>Otomatik Yenile</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Live Statistics -->
+                    <div class="live-stats" id="liveStats" style="display: none;">
+                        <div class="stat-card live-stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-info">
+                                <h3 id="liveTotalEarthquakes">-</h3>
+                                <p>Son 24 Saat</p>
+                            </div>
+                        </div>
+                        <div class="stat-card live-stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-info">
+                                <h3 id="liveAvgMagnitude">-</h3>
+                                <p>Ortalama Büyüklük</p>
+                            </div>
+                        </div>
+                        <div class="stat-card live-stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-info">
+                                <h3 id="liveMaxMagnitude">-</h3>
+                                <p>En Büyük Deprem</p>
+                            </div>
+                        </div>
+                        <div class="stat-card live-stat-card">
+                            <div class="stat-icon">⏰</div>
+                            <div class="stat-info">
+                                <h3 id="liveLastUpdate">-</h3>
+                                <p>Son Güncelleme</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Earthquakes List -->
+                    <div id="liveEarthquakesList" class="live-earthquakes-list"></div>
+                </section>
+
+                <!-- Weather Section -->
+                <section id="weatherSection" class="weather-section" style="display: none;">
+                    <div class="weather-header">
+                        <h3>🌤️ Hava Durumu</h3>
+                        <div class="weather-controls">
+                            <button id="refreshWeatherBtn" class="refresh-btn" title="Yenile">
+                                🔄
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- All Provinces Weather Forecast Table -->
+                    <div id="allProvincesWeather" class="all-provinces-weather">
+                        <div id="allProvincesWeatherList" class="all-provinces-weather-list"></div>
+                    </div>
+                </section>
+
+                <!-- Map Section -->
+                <section id="mapSection" class="map-section" style="display: none;">
+                    <div class="map-header">
+                        <h3>🗺️ Marmara Bölgesi - İnteraktif Harita</h3>
+                        <p class="map-description">İllere tıklayarak risk bilgilerini görüntüleyebilirsiniz</p>
+                    </div>
+                    <div class="map-container">
+                        <div id="marmaraMap" class="marmara-map"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Dashboard JS - Load immediately after DOM is ready -->
+    <!-- İl Detayları Modal -->
+    <div id="provinceDetailModal" class="province-modal">
+        <div class="province-modal-backdrop"></div>
+        <div class="province-modal-content">
+            <div class="province-modal-header">
+                <h2>İl Detayları</h2>
+                <button class="province-modal-close" id="provinceModalCloseBtn">×</button>
+            </div>
+            <div class="province-modal-body" id="provinceModalBody">
+                <!-- İçerik buraya dinamik olarak eklenecek -->
+            </div>
+            <div class="province-modal-footer">
+                <button class="province-modal-close-btn" id="provinceModalCloseBtnBottom">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AfetIhtiyacGrafik React Component -->
+    <script type="text/babel" src="/views/js/components/AfetIhtiyacGrafik.jsx"></script>
+    <script src="/views/js/dashboard.js"></script>
+</body>
+</html>
+

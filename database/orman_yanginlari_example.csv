@@ -1,0 +1,21 @@
+il_id,ilce_id,yangin_baslangic_tarihi,yangin_bitis_tarihi,etkilenen_alan,yangin_nedeni,yangin_nedeni_detay,yangin_seviyesi,durum,enlem,boylam,lokasyon_adi,kullanilan_ekip_sayisi,kullanilan_ucak_sayisi,kullanilan_helikopter_sayisi,kontrol_altina_alinma_suresi,hasar_bilgisi,etkilenen_orman_turu,kaynak
+1,NULL,"2024-07-15 14:30:00","2024-07-16 18:00:00",125.50,insan,ihmal,buyuk,sonduruldu,41.0082,28.9784,"Beykoz Ormanı",150,5,3,27.5,"5 ev hasar gördü",Çam,OGM
+4,NULL,"2024-08-10 10:15:00","2024-08-11 22:30:00",85.30,insan,kasit,orta,sonduruldu,39.6484,27.8826,"Kazdağı Milli Parkı",120,3,2,36.25,"Orman alanı tahrip oldu",Çam,OGM
+2,NULL,"2024-06-20 16:45:00","2024-06-21 08:20:00",45.20,dogal,yildirim,orta,sonduruldu,40.1826,29.0665,"Uludağ Ormanı",80,2,1,15.75,"",Çam,OGM
+3,NULL,"2024-09-05 12:00:00","2024-09-06 20:15:00",210.75,insan,ihmal,cok_buyuk,sonduruldu,40.8533,29.8815,"Kocaeli Ormanı",200,8,5,32.25,"10 ev hasar gördü, 2 hayvan öldü",Meşe,OGM
+
+1,NULL,"2024-07-15 14:30:00","2024-07-16 18:00:00",125.50,insan,ihmal,buyuk,sonduruldu,41.0082,28.9784,"Beykoz Ormanı",150,5,3,27.5,"5 ev hasar gördü",Çam,OGM
+4,NULL,"2024-08-10 10:15:00","2024-08-11 22:30:00",85.30,insan,kasit,orta,sonduruldu,39.6484,27.8826,"Kazdağı Milli Parkı",120,3,2,36.25,"Orman alanı tahrip oldu",Çam,OGM
+2,NULL,"2024-06-20 16:45:00","2024-06-21 08:20:00",45.20,dogal,yildirim,orta,sonduruldu,40.1826,29.0665,"Uludağ Ormanı",80,2,1,15.75,"",Çam,OGM
+3,NULL,"2024-09-05 12:00:00","2024-09-06 20:15:00",210.75,insan,ihmal,cok_buyuk,sonduruldu,40.8533,29.8815,"Kocaeli Ormanı",200,8,5,32.25,"10 ev hasar gördü, 2 hayvan öldü",Meşe,OGM
+
+
+
+
+
+
+
+
+
+
+

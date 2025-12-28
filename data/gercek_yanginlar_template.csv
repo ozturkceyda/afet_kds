@@ -1,0 +1,19 @@
+il_adi,yangin_baslangic_tarihi,yangin_bitis_tarihi,etkilenen_alan,yangin_nedeni,yangin_nedeni_detay,yangin_seviyesi,durum,enlem,boylam,lokasyon_adi,kullanilan_ekip_sayisi,kullanilan_ucak_sayisi,kullanilan_helikopter_sayisi,kontrol_altina_alinma_suresi,hasar_bilgisi,etkilenen_orman_turu,kaynak
+İstanbul,2024-07-15 14:30:00,2024-07-16 18:00:00,125.50,insan,ihmal,buyuk,sonduruldu,41.0082,28.9784,Beykoz Ormanı,150,5,3,27.5,5 ev hasar gördü,Çam,OGM
+Balıkesir,2024-08-20 10:15:00,2024-08-21 16:45:00,450.75,insan,piknik,orta,sonduruldu,39.6484,27.8826,Kazdağı Milli Parkı,200,8,5,30.2,Yok,Çam,OGM
+Çanakkale,2024-07-10 08:00:00,2024-07-12 20:30:00,1200.00,dogal,yildirim,cok_buyuk,sonduruldu,40.1553,26.4142,Gelibolu Yarımadası,500,15,10,60.5,10 ev hasar gördü,Meşe,AFAD
+
+İstanbul,2024-07-15 14:30:00,2024-07-16 18:00:00,125.50,insan,ihmal,buyuk,sonduruldu,41.0082,28.9784,Beykoz Ormanı,150,5,3,27.5,5 ev hasar gördü,Çam,OGM
+Balıkesir,2024-08-20 10:15:00,2024-08-21 16:45:00,450.75,insan,piknik,orta,sonduruldu,39.6484,27.8826,Kazdağı Milli Parkı,200,8,5,30.2,Yok,Çam,OGM
+Çanakkale,2024-07-10 08:00:00,2024-07-12 20:30:00,1200.00,dogal,yildirim,cok_buyuk,sonduruldu,40.1553,26.4142,Gelibolu Yarımadası,500,15,10,60.5,10 ev hasar gördü,Meşe,AFAD
+
+
+
+
+
+
+
+
+
+
+
