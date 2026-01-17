@@ -162,6 +162,20 @@ GET /api/weather/statistics
  İş Kuralları & Özel Senaryolar
 
 Proje kapsamında iş kuralı içeren özel senaryolar uygulanmıştır:
+## İş Kuralları ve Senaryolar
+
+1. Sisteme yeni bir canlı deprem verisi eklendiğinde,
+   ilgili ilin deprem risk skoru otomatik olarak güncellenir.
+
+2. Hava durumu verileri sisteme eklendiğinde,
+   yağış ve rüzgar verilerine bağlı olarak sel ve yangın riskleri
+   otomatik hesaplanır.
+
+3. Risk skorları eklenmeden veya güncellenmeden önce
+   sistem veri tutarlılığı kontrollerini gerçekleştirir.
+
+Bu senaryolar MySQL trigger mekanizmaları ile otomatik olarak uygulanmaktadır.
+
 
 Çoklu afet verileri birleştirilerek genel risk skoru hesaplanır
 
