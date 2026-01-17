@@ -1,4 +1,4 @@
-# 🌍 Afet Yönetimi Karar Destek Sistemi (KDS)
+#  Afet Yönetimi Karar Destek Sistemi (KDS)
 
 Marmara Bölgesi özelinde **deprem, sel ve orman yangını** afetlerine yönelik risk analizleri üreten, veriye dayalı karar destek mekanizmaları sunan **web tabanlı bir Afet Yönetimi Karar Destek Sistemi**dir.
 
@@ -6,7 +6,7 @@ Bu proje; afet risklerinin analiz edilmesi, öncelikli bölgelerin belirlenmesi 
 
 ---
 
-## 🎯 Projenin Amacı
+##  Projenin Amacı
 
 Bu sistemin temel hedefleri:
 
@@ -18,7 +18,7 @@ Bu sistemin temel hedefleri:
 
 ---
 
-## 📌 Sistem Kapsamı
+##  Sistem Kapsamı
 
 Sistem aşağıdaki afet türleri için analiz ve raporlama üretir:
 
@@ -31,21 +31,21 @@ Sistem aşağıdaki afet türleri için analiz ve raporlama üretir:
 
 ---
 
-## 🏗️ Mimari Yapı (MVC)
+##  Mimari Yapı (MVC)
 
 Proje **MVC (Model – Controller – View)** mimarisi esas alınarak geliştirilmiştir.
 
-### 🔹 Model Katmanı
+###  Model Katmanı
 - Veritabanı sorguları  
 - Analiz algoritmaları  
 - Risk skor hesaplamaları  
 
-### 🔹 Controller Katmanı
+###  Controller Katmanı
 - RESTful API endpoint’leri  
 - İş kuralları  
 - Veri akışının yönetimi  
 
-### 🔹 View / Client Katmanı
+###  View / Client Katmanı
 - Dashboard arayüzü  
 - Harita, grafik ve tablo görselleştirmeleri  
 - Kullanıcı etkileşimleri  
@@ -54,7 +54,7 @@ Bu yapı sistemin **okunabilir**, **geliştirilebilir** ve **sürdürülebilir**
 
 ---
 
-## 🧰 Kullanılan Teknolojiler
+##  Kullanılan Teknolojiler
 
 ### Backend
 - **Node.js**
@@ -77,7 +77,7 @@ Bu yapı sistemin **okunabilir**, **geliştirilebilir** ve **sürdürülebilir**
 
 ---
 
-## 📁 Proje Klasör Yapısı
+##  Proje Klasör Yapısı
 
 ```text
 afet-kds/
@@ -108,8 +108,8 @@ afet-kds/
 │   └── marmara.geojson
 └── README.md
 
-🔌 API Endpoint Listesi
-📍 İller
+ API Endpoint Listesi
+ İller
 
 GET /api/provinces
 
@@ -117,7 +117,7 @@ GET /api/provinces/marmara
 
 GET /api/provinces/:id
 
-🌍 Risk Skorları
+ Risk Skorları
 
 GET /api/risks
 
@@ -125,7 +125,7 @@ GET /api/risks/average
 
 GET /api/risks/all-averages
 
-🌋 Deprem
+ Deprem
 
 GET /api/earthquakes
 
@@ -135,7 +135,7 @@ GET /api/earthquakes/live
 
 GET /api/earthquakes/statistics
 
-🌧️ Sel
+ Sel
 
 GET /api/flood-risk/analysis
 
@@ -143,7 +143,7 @@ GET /api/flood-risk/table
 
 GET /api/flood-risk/warnings
 
-🔥 Yangın
+ Yangın
 
 GET /api/fire-risk/analysis
 
@@ -151,7 +151,7 @@ GET /api/fires/statistics
 
 GET /api/fires/recent
 
-☁️ Hava Durumu
+ Hava Durumu
 
 GET /api/weather
 
@@ -159,7 +159,7 @@ GET /api/weather/all-marmara
 
 GET /api/weather/statistics
 
-🧠 İş Kuralları & Özel Senaryolar
+ İş Kuralları & Özel Senaryolar
 
 Proje kapsamında iş kuralı içeren özel senaryolar uygulanmıştır:
 
@@ -171,7 +171,7 @@ Afet büyüklüğüne göre senaryo bazlı karar özetleri üretilir
 
 Canlı ve geçmiş veriler birlikte analiz edilir
 
-🗄️ Veritabanı Tasarımı
+ Veritabanı Tasarımı
 
 Veritabanı MySQL üzerinde tasarlanmıştır ve aşağıdaki temel tabloları içerir:
 
@@ -193,12 +193,12 @@ risk_skorlari
 
 kullanicilar
 
-📌 ER Diyagramı proje teslimi kapsamında ayrıca sunulmuştur (PNG/PDF).
+ ER Diyagramı proje teslimi kapsamında ayrıca sunulmuştur (PNG/PDF).
 
-⚙️ Kurulum Adımları
-1️⃣ Bağımlılıkların Kurulması
+ Kurulum Adımları
+1️) Bağımlılıkların Kurulması
 npm install
-2️⃣ Ortam Değişkenleri
+2️) Ortam Değişkenleri
 .env.example dosyası baz alınarak .env oluşturulur.
 DB_HOST=localhost
 DB_USER=root
@@ -210,7 +210,7 @@ npm start
 Geliştirme modu:
 npm run dev
 
-📊 Dashboard Özellikleri
+ Dashboard Özellikleri
 
 Marmara Bölgesi risk haritası (koroplet)
 
@@ -224,7 +224,7 @@ Bütçe ve altyapı önceliklendirme tabloları
 
 Afet lojistiği ve barınma kapasitesi bilgileri
 
-📌 Notlar
+ Notlar
 
 Proje MVC mimarisine katı şekilde uygundur
 
@@ -234,7 +234,7 @@ Kod okunabilirliği ve sürdürülebilirlik önceliklendirilmiştir
 
 Akademik proje standartlarına uygun olarak hazırlanmıştır
 
-✅ Teslim Kapsamı
+ Teslim Kapsamı
 
 GitHub Repository (Public)
 
