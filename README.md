@@ -205,7 +205,7 @@ DB_USER=root
 DB_PASSWORD=
 DB_NAME=kds_afet_yonetimi
 PORT=3000
-3️⃣ Sunucunun Çalıştırılması
+3️) Sunucunun Çalıştırılması
 npm start
 Geliştirme modu:
 npm run dev
